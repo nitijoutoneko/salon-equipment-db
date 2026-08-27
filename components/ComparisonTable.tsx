@@ -1,9 +1,9 @@
 'use client';
 
-import { useEffect, useState } from 'react';
 import Link from 'next/link';
+import { useEffect, useState } from 'react';
+import { formatPrice, products, type Product } from '../data/products';
 import BedVisual from './BedVisual';
-import { products, type Product } from '../data/products';
 
 const storageKey = 'bed-select-comparison';
 
@@ -30,21 +30,38 @@ export default function ComparisonTable() {
   }
 
   if (selected.length < 2) {
-    return <div className="empty-state compare-empty"><strong>比較する商品を2〜3点選んでください</strong><p>商品一覧の「比較に追加」から、気になる商品を選べます。</p><Link className="button primary" href="/products">商品を選びに行く</Link></div>;
+    return <div className="empty-state compare-empty"><strong>比較する商品を2〜3点選んでください</strong><p>商品一覧で「比較に追加」を押すと、ここに横並びで表示されます。</p><Link className="primary-action" href="/products">商品一覧から選ぶ</Link></div>;
   }
 
-  const rows: { label: string; value: (product: Product) => string }[] = [
-    { label: 'タイプ', value: (product) => product.type },
-    { label: '主な用途', value: (product) => product.uses.join('・') },
-    { label: '幅', value: (product) => `${product.width}cm` },
-    { label: '長さ', value: (product) => `${product.length}cm` },
-    { label: '高さ範囲', value: (product) => `${product.minHeight}〜${product.maxHeight}cm` },
-    { label: 'フェイスホール', value: (product) => product.faceHole ? 'あり' : 'なし' },
-    { label: 'リクライニング', value: (product) => product.reclining ? 'あり' : 'なし' },
-    { label: '持ち運び', value: (product) => product.portable ? '対応想定' : '非対応想定' },
-    { label: 'クッション', value: (product) => product.cushion },
-    { label: '張地', value: (product) => product.upholstery },
+  const rows: { label: string; value: (product: Product) => React.ReactNode; important?: boolean }[] = [
+    { label: '参考価格（デモ）', value: (p) => formatPrice(p.price), important: true },
+    { label: 'メーカー', value: (p) => p.manufacturer },
+    { label: '型番', value: (p) => p.modelNumber },
+    { label: '幅', value: (p) => `${p.width}cm` },
+    { label: '長さ', value: (p) => `${p.length}cm` },
+    { label: '最低高さ', value: (p) => `${p.minHeight}cm` },
+    { label: '最高高さ', value: (p) => `${p.maxHeight}cm` },
+    { label: '重量', value: (p) => `${p.weight}kg` },
+    { label: '耐荷重', value: (p) => `${p.loadCapacity}kg` },
+    { label: '昇降方式', value: (p) => p.liftType },
+    { label: '電動昇降', value: (p) => p.electricLift ? 'あり' : 'なし' },
+    { label: 'リクライニング', value: (p) => p.reclining ? 'あり' : 'なし' },
+    { label: 'クッション厚', value: (p) => `${p.cushionThickness}cm` },
+    { label: '整体向き', value: (p) => p.uses.includes('整体') ? '●' : '―' },
+    { label: 'リラク向き', value: (p) => p.uses.includes('リラクゼーション') ? '●' : '―' },
+    { label: 'エステ向き', value: (p) => p.uses.includes('エステ') ? '●' : '―' },
+    { label: 'フェイシャル向き', value: (p) => p.uses.includes('フェイシャル') ? '●' : '―' },
+    { label: '特徴', value: (p) => p.featureSummary },
+    { label: '購入先', value: () => <span className="unregistered">URL未登録</span> },
   ];
 
-  return <div className="comparison-wrap"><p className="swipe-note">横にスクロールして比較できます →</p><table className="comparison-table"><thead><tr><th scope="col">比較項目</th>{selected.map((product) => <th scope="col" key={product.id}><BedVisual tone={product.tone} compact /><span className="pill">{product.type}</span><h2>{product.name}</h2><button type="button" onClick={() => remove(product.id)}>比較から外す ×</button></th>)}</tr></thead><tbody>{rows.map((row) => <tr key={row.label}><th scope="row">{row.label}</th>{selected.map((product) => <td key={product.id}>{row.value(product)}</td>)}</tr>)}<tr className="table-actions"><th>詳細</th>{selected.map((product) => <td key={product.id}><Link href={`/products/${product.slug}`}>商品詳細を見る →</Link></td>)}</tr></tbody></table></div>;
+  return (
+    <div className="comparison-wrap">
+      <p className="swipe-note">← 横にスクロールして比較できます →</p>
+      <table className="comparison-table">
+        <thead><tr><th scope="col">比較項目</th>{selected.map((product) => <th scope="col" key={product.id}><BedVisual tone={product.tone} compact reclining={product.reclining} portable={product.portable} /><span className="demo-badge">デモデータ</span><small>{product.manufacturer}</small><h2>{product.name}</h2><button type="button" onClick={() => remove(product.id)}>比較から外す ×</button></th>)}</tr></thead>
+        <tbody>{rows.map((row) => <tr className={row.important ? 'important-row' : ''} key={row.label}><th scope="row">{row.label}</th>{selected.map((product) => <td key={product.id}>{row.value(product)}</td>)}</tr>)}<tr className="table-actions"><th>商品詳細</th>{selected.map((product) => <td key={product.id}><Link href={`/products/${product.slug}`}>詳細・購入先を見る</Link></td>)}</tr></tbody>
+      </table>
+    </div>
+  );
 }

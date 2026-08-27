@@ -13,8 +13,8 @@ function configuredSiteUrl() {
 }
 
 const siteUrl = configuredSiteUrl();
-const title = 'ベッドセレクト｜施術ベッド比較ガイド';
-const description = 'サロン・整体・エステ向け施術ベッドを、用途・サイズ・機能から探して比較できる専門ガイドです。';
+const title = 'ベッドセレクト｜施術ベッド検索・価格比較データベース';
+const description = 'サロン・整体・エステ向け施術ベッドを、価格・用途・サイズ・機能から検索し、2〜3商品を横並びで比較できる商品データベースです。';
 
 export const metadata: Metadata = {
   metadataBase: siteUrl,
@@ -25,7 +25,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website', locale: 'ja_JP', title, description, siteName: 'ベッドセレクト',
     url: siteUrl ? '/' : undefined,
-    images: siteUrl ? [{ url: '/og.png', width: 1200, height: 630, alt: 'ベッドセレクト｜施術ベッド選びを、もっと確かに。' }] : [],
+    images: siteUrl ? [{ url: '/og.png', width: 1200, height: 630, alt: 'ベッドセレクト｜施術ベッドを、検索・比較。' }] : [],
   },
   twitter: {
     card: 'summary_large_image', title, description,

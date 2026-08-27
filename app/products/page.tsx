@@ -10,6 +10,6 @@ export const metadata: Metadata = {
 
 export default function ProductsPage() {
   return (
-    <><SiteHeader /><main className="page-main products-page"><div className="page-intro"><p className="eyebrow">PRODUCT FINDER</p><h1>施術ベッドを探す</h1><p>用途や設置スペースに合わせて、条件を絞り込んでください。</p><span>※商品名・仕様値はすべてUI確認用のデモデータです。</span></div><ProductsExplorer /></main><SiteFooter /></>
+    <><SiteHeader /><main className="page-main products-page"><div className="page-heading"><div><p>商品検索</p><h1>施術ベッド商品一覧</h1><span>価格・サイズ・機能を指定して絞り込めます</span></div><strong>全商品デモデータ</strong></div><ProductsExplorer /></main><SiteFooter /></>
   );
 }

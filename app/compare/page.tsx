@@ -9,5 +9,5 @@ export const metadata: Metadata = {
 };
 
 export default function ComparePage() {
-  return <><SiteHeader /><main className="page-main compare-page"><div className="page-intro"><p className="eyebrow">COMPARE</p><h1>選んだ商品を比較</h1><p>サイズや機能の違いを横並びで確認できます。</p><span>※商品名・仕様値はすべてUI確認用のデモデータです。</span></div><ComparisonTable /></main><SiteFooter /></>;
+  return <><SiteHeader /><main className="page-main compare-page"><div className="page-heading"><div><p>商品比較</p><h1>施術ベッド比較表</h1><span>選んだ2〜3商品の価格・サイズ・機能・購入先を横並びで確認できます</span></div><strong>全商品デモデータ</strong></div><ComparisonTable /></main><SiteFooter /></>;
 }
